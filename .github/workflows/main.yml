@@ -1,0 +1,73 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-test-docker:
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_DATABASE: webcore_db
+          MARIADB_USER: webcore
+          MARIADB_PASSWORD: webcore123
+          MARIADB_ROOT_PASSWORD: root123
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mariadb-admin ping -h localhost -uroot -proot123"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      # 1️⃣ Repository holen
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2️⃣ Java 17 installieren
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 3️⃣ Build & Tests (gegen MariaDB-Service)
+      - name: Build & Test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/webcore_db
+          SPRING_DATASOURCE_USERNAME: webcore
+          SPRING_DATASOURCE_PASSWORD: webcore123
+        run: mvn -B -q clean test package
+
+      # 4️⃣ Docker vorbereiten
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 5️⃣ Login Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 6️⃣ Docker Image bauen & pushen
+      - name: Build & Push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/webcore-app:latest
+
+      # 7️⃣ (Optional) DORA-Statistiken loggen
+      - name: Print build summary
+        run: |
+          echo "Build abgeschlossen am $(date)"
+          echo "MariaDB-Service aktiv: $(docker ps | grep mariadb | wc -l)"
