@@ -60,7 +60,7 @@ jobs:
       #  Automatisierte Tests
       - name: Run Unit Tests
         env:
-            SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/webcore_db
+            SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/webcore_db
             SPRING_DATASOURCE_USERNAME: webcore
             SPRING_DATASOURCE_PASSWORD: webcore123
         run: mvn test
