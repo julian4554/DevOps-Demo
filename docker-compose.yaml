@@ -13,7 +13,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-uwebcore", "-pwebcore123"]
+      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-uwebcore", "-pwebcore123"]
       interval: 10s
       timeout: 5s
       retries: 5
