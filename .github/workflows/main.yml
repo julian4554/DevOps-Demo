@@ -19,6 +19,7 @@ jobs:
           MARIADB_DATABASE: webcore_db
           MARIADB_USER: webcore
           MARIADB_PASSWORD: webcore123
+          MARIADB_ROOT_PASSWORD: root123
         ports:
           - 3306:3306
         options: >-
