@@ -47,21 +47,25 @@ jobs:
       #  Build & Package
       - name: Build & Package with Maven
         env:
-          SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/webcore_db
+          SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/webcore_db
           SPRING_DATASOURCE_USERNAME: webcore
           SPRING_DATASOURCE_PASSWORD: webcore123
-        run: mvn -B clean package -Dmaven.compiler.release=21
+        run: mvn -B clean package -DskipTests -Dmaven.compiler.release=21
 
       - name: Wait for MariaDB
         run: |
           for i in {1..30}; do
-            nc -z mariadb 3306 && echo "✅ DB ready" && break
-            echo "⏳ Waiting for DB..."
+            nc -z mariadb 3306 && echo "DB ready" && break
+            echo " Waiting for DB..."
             sleep 2
           done
 
       #  Automatisierte Tests
       - name: Run Unit Tests
+        env:
+            SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/webcore_db
+            SPRING_DATASOURCE_USERNAME: webcore
+            SPRING_DATASOURCE_PASSWORD: webcore123
         run: mvn test
 
       #  Codequalität prüfen
@@ -90,7 +94,7 @@ jobs:
       #  Build-Zusammenfassung
       - name: Print build summary
         run: |
-          echo "✅ CI/CD build completed successfully on $(date)"
+          echo "CI/CD build completed successfully on $(date)"
           echo "Java version:" $(java -version 2>&1 | head -n 1)
           echo "Database: MariaDB 11"
 
@@ -107,7 +111,7 @@ jobs:
         run: |
           echo "Deploying image to staging environment..."
           sleep 5
-          echo "✅ Staging deployment successful."
+          echo " Staging deployment successful."
 
   #  Production Deployment (mit Genehmigung)
   deploy-production:
@@ -124,4 +128,4 @@ jobs:
           echo "Waiting for approval..."
           echo "Deploying to production environment..."
           sleep 5
-          echo "🚀 Production deployment successful."
+          echo " Production deployment successful."
