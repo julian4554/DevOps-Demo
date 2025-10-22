@@ -52,6 +52,14 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: webcore123
         run: mvn -B clean package -Dmaven.compiler.release=21
 
+      - name: Wait for MariaDB
+        run: |
+          for i in {1..30}; do
+            nc -z mariadb 3306 && echo "✅ DB ready" && break
+            echo "⏳ Waiting for DB..."
+            sleep 2
+          done
+
       #  Automatisierte Tests
       - name: Run Unit Tests
         run: mvn test
