@@ -29,11 +29,11 @@ jobs:
           --health-retries=5
 
     steps:
-      # 1️⃣ Quellcode abrufen
+      #  Quellcode abrufen
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2️⃣ JDK 21 installieren
+      # JDK 21 installieren
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -44,7 +44,7 @@ jobs:
       - name: Verify Java version
         run: java -version
 
-      # 3️⃣ Build & Package
+      #  Build & Package
       - name: Build & Package with Maven
         env:
           SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/webcore_db
@@ -52,26 +52,26 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: webcore123
         run: mvn -B clean package -Dmaven.compiler.release=21
 
-      # 4️⃣ Automatisierte Tests
+      #  Automatisierte Tests
       - name: Run Unit Tests
         run: mvn test
 
-      # 5️⃣ Codequalität prüfen
+      #  Codequalität prüfen
       - name: Code Quality Check (Checkstyle)
         run: mvn checkstyle:check || echo "Style warnings found"
 
-      # 6️⃣ Docker Buildx Setup
+      #  Docker Buildx Setup
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 7️⃣ Login zu Docker Hub
+      #  Login zu Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 8️⃣ Docker-Image bauen & pushen
+      #  Docker-Image bauen & pushen
       - name: Build & Push image
         uses: docker/build-push-action@v6
         with:
@@ -79,14 +79,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/webcore-app:latest
 
-      # 9️⃣ Build-Zusammenfassung
+      #  Build-Zusammenfassung
       - name: Print build summary
         run: |
           echo "✅ CI/CD build completed successfully on $(date)"
           echo "Java version:" $(java -version 2>&1 | head -n 1)
           echo "Database: MariaDB 11"
 
-  # 🔹 Staging Deployment
+  #  Staging Deployment
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
           sleep 5
           echo "✅ Staging deployment successful."
 
-  # 🔹 Production Deployment (mit Genehmigung)
+  #  Production Deployment (mit Genehmigung)
   deploy-production:
     name: Deploy to Production
     runs-on: ubuntu-latest
