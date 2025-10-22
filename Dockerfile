@@ -10,7 +10,7 @@ RUN mvn -B dependency:go-offline
 COPY src ./src
 
 # Package application
-RUN mvn -B clean package
+RUN mvn -B clean package -DskipTests -Dspring.jpa.hibernate.ddl-auto=none
 
 # ---- Runtime Stage ----
 FROM eclipse-temurin:21-jdk
