@@ -16,7 +16,10 @@ class ProjectRequestIntegrationTest {
     void testSaveAndReadProjectRequest() {
         // Arrange
         ProjectRequest request = new ProjectRequest();
-        request.setDescription("Testing database connectivity");
+        request.setName("Test User");
+        request.setEmail("test@webcore.com");
+        request.setDescription("Testing database connectivity with valid data");
+
         // Act
         repository.save(request);
 
