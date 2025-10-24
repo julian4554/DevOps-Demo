@@ -44,19 +44,6 @@ jobs:
       - name: Verify Java version
         run: java -version
 
-      - name: Wait for MariaDB to be ready
-        run: |
-          echo "⏳ Waiting for MariaDB service..."
-          for i in {1..12}; do
-            if mariadb-admin ping -h 127.0.0.1 -uwebcore -pwebcore123 --silent; then
-              echo " MariaDB is ready!"
-              break
-            fi
-            echo "MariaDB not ready yet, retrying in 5s..."
-            sleep 5
-          done
-        
-
       #  Build & Package
       - name: Build & Package with Maven
         env:
