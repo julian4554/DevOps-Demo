@@ -43,14 +43,16 @@ jobs:
 
       - name: Verify Java version
         run: java -version
+
       - name: Install Maven
+        if: ${{ env.ACT }}
         run: |
           sudo apt-get update
           sudo apt-get install -y maven
 
       #  Build & Package
       - name: Build & Package with Maven
-        run: mvn -B clean package -Dmaven.compiler.release=21
+        run: mvn -B clean verify -Dmaven.compiler.release=21
 
       #  Codequalität prüfen
       - name: Code Quality Check (Checkstyle)
