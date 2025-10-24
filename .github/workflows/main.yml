@@ -60,7 +60,7 @@ jobs:
       #  Build & Package
       - name: Build & Package with Maven
         env:
-          SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/webcore_db
+          SPRING_DATASOURCE_URL: jdbc:mariadb://127.0.0.1:3306/webcore_db
           SPRING_DATASOURCE_USERNAME: webcore
           SPRING_DATASOURCE_PASSWORD: webcore123
         run: mvn -B clean package -Dmaven.compiler.release=21
