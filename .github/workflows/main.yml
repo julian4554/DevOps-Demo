@@ -54,6 +54,7 @@ jobs:
             fi
             echo "MariaDB not ready yet, retrying in 5s..."
             sleep 5
+          done
         
 
       #  Build & Package
