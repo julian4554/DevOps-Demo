@@ -58,10 +58,6 @@ jobs:
       - name: Code Quality Check (Checkstyle)
         run: mvn checkstyle:check || echo "Style warnings found"
 
-      #  Docker Buildx Setup
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       #  Dual ACT/GitHub Actions:Login zu Docker Hub
       - name: Log in to Docker Hub
         if: ${{ !env.ACT }}
@@ -77,8 +73,7 @@ jobs:
           context: .
           push: ${{ !env.ACT }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/webcore-app:latest
-          provenance: true
-          sbom: true
+
 
       #  Build-Zusammenfassung
       - name: Print build summary
