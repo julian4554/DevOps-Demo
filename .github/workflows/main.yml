@@ -75,13 +75,6 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/webcore-app:latest
 
 
-      #  Build-Zusammenfassung
-      - name: Print build summary
-        run: |
-          echo "CI/CD build completed successfully on $(date)"
-          echo "Java version:" $(java -version 2>&1 | head -n 1)
-          echo "Database: MariaDB 11"
-
   #  Staging Deployment
   deploy-staging:
     name: Deploy to Staging
