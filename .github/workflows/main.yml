@@ -32,6 +32,10 @@ jobs:
       #  Quellcode abrufen
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Check default Java version
+        run: |
+          echo "Default Java version:"
+          java -version
 
       # JDK 21 installieren
       - name: Set up JDK 21
@@ -42,7 +46,9 @@ jobs:
           cache: maven
 
       - name: Verify Java version
-        run: java -version
+        run: |
+          echo "Default Java version:"
+          java -version
 
       - name: Install Maven
         if: ${{ env.ACT }}
