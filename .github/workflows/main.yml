@@ -53,12 +53,6 @@ jobs:
             echo "Currently used Java version:"
             java -version
 
-      - name: Install Maven
-        if: ${{ env.ACT }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y maven
-
       #  Build & Package
       - name: Build & Package with Maven
         run: mvn -B clean verify -Dmaven.compiler.release=21
@@ -117,3 +111,7 @@ jobs:
           echo "Deploying to production environment..."
           sleep 5
           echo " Production deployment successful."
+      - name: Mark deployment as complete
+        if: ${{ success() }}
+        run: |
+          echo "Deployment completed successfully at $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
