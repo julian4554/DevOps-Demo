@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Record start time
-        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+        run: echo "START_TIME=$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
       #  Quellcode abrufen
       - name: Checkout
         uses: actions/checkout@v4
