@@ -45,5 +45,6 @@ Sie besteht aus drei aufeinanderfolgenden Jobs:
 flowchart TD
     A[Push / PR auf main] --> B[Build, Test & Dockerize]
     B --> C[Deploy Staging]
-    C --> D[Deploy Production (nach Freigabe)]
-    D --> E[ DORA-Metriken: Logging & Abschluss]
+    C --> D[Deploy Production - nach Freigabe]
+    D --> E[DORA-Metriken: Logging & Abschluss]
+
