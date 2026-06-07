@@ -5,6 +5,8 @@ Die Pipeline wurde mit **GitHub Actions**, **Maven** und **Docker** realisiert u
 
 ---
 
+## Note
+
 ##  Übersicht
 
 Die Pipeline deckt den gesamten Lebenszyklus einer Webanwendung ab – vom Commit bis zur produktiven Bereitstellung.  
